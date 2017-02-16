@@ -43,3 +43,22 @@ object exercise_2_1 extends App {
   println(fibTailrec(6))
   println(fibTailrec(7))
 }
+
+object exercise_2_2 extends App {
+  @annotation.tailrec
+  def isSorted[A](as: Array[A], ordered: (A, A) => Boolean): Boolean = {
+    if (as.length >= 2)
+      ordered(as(0), as(1)) && isSorted(as.drop(1), ordered)
+    else
+      true
+
+  }
+
+  println(isSorted[Int](Array(1, 2, 3, 4, 5, 6), (a, b) => a >= b))
+  println(isSorted[Int](Array(1, 5, 3, 7, 2, 4, 9, 2), (a, b) => a >= b))
+  println(isSorted[Int](Array(1, 2, 3, 4, 5, 6), (a, b) => a < b))
+  println(isSorted[Int](Array.empty, (a, b) => a < b))
+  println(isSorted[String](Array("a", "b", "c", "d"), (a, b) => a < b))
+  println(isSorted[String](Array("a", "b", "c", "d"), (a, b) => a == b))
+
+}
