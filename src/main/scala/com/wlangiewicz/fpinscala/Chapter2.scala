@@ -62,3 +62,15 @@ object exercise_2_2 extends App {
   println(isSorted[String](Array("a", "b", "c", "d"), (a, b) => a == b))
 
 }
+
+object exercise_2_3 extends App {
+  def curry[A, B, C](f: (A, B) => C): A => (B => C) = a => b => f(a, b)
+}
+
+object exercise_2_4 extends App {
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C = (a, b) => f(a)(b)
+}
+
+object exercise_2_5 extends App {
+  def compose[A, B, C](f: B => C, g: A => B): A => C = a => f(g(a))
+}
