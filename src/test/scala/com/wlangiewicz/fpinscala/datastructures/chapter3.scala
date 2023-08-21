@@ -10,7 +10,7 @@ object List {
     else Cons(as.head, apply(as.tail: _*))
 
   def sum(ints: List[Int]): Int = ints match {
-    case Nil => 0
+    case Nil         => 0
     case Cons(x, xs) => x + sum(xs)
   }
 }

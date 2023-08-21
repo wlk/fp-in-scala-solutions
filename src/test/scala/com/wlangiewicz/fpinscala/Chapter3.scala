@@ -20,19 +20,19 @@ class exercise_3_1 extends FpTest {
 
 class exercise_3_2 extends FpTest {
   def tail[A](xs: List[A]): List[A] = xs match {
-      case Nil => Nil
-      case Cons(_, xs) => xs
-    }
+    case Nil         => Nil
+    case Cons(_, xs) => xs
+  }
   "tail" should "return tail of a list" in {
     tail(Nil) shouldBe Nil
     tail(Cons(1, Nil)) shouldBe Nil
-    tail(Cons(1, Cons(2, Nil))) shouldBe Cons(2,Nil)
+    tail(Cons(1, Cons(2, Nil))) shouldBe Cons(2, Nil)
   }
 }
 
 class exercise_3_3 extends FpTest {
   def setHead[A](xs: List[A], newHead: A): List[A] = xs match {
-    case Nil => Nil
+    case Nil         => Nil
     case Cons(_, xs) => Cons(newHead, xs)
   }
 
@@ -45,11 +45,10 @@ class exercise_3_3 extends FpTest {
 
 class exercise_3_4 extends FpTest {
   def drop[A](l: List[A], n: Int): List[A] = l match {
-    case Nil => Nil
-    case Cons(_, t) if n > 0 => drop(t, n-1)
-    case done => done
+    case Nil                 => Nil
+    case Cons(_, t) if n > 0 => drop(t, n - 1)
+    case done                => done
   }
-
 
   "drop" should "drop elements from a list" in {
     drop(Nil, 99) shouldBe Nil
@@ -62,14 +61,14 @@ class exercise_3_4 extends FpTest {
 
 class exercise_3_5 extends FpTest {
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-    case Nil => Nil
+    case Nil                => Nil
     case Cons(h, t) if f(h) => dropWhile(t, f)
-    case done => done
+    case done               => done
   }
 
   "dropWhile" should "drop elements from a list" in {
     dropWhile(Nil, _: Nothing => true) shouldBe Nil
-    dropWhile(Nil,  _: Nothing => false) shouldBe Nil
+    dropWhile(Nil, _: Nothing => false) shouldBe Nil
     dropWhile(Cons(1, Nil), _: Int => true) shouldBe Nil
     dropWhile(Cons(1, Cons(2, Nil)), _: Int => false) shouldBe Nil
     dropWhile(Cons(1, Cons(33, Cons(0, Nil))), (x: Int) => x <= 1) shouldBe Cons(33, Cons(0, Nil))
@@ -78,9 +77,9 @@ class exercise_3_5 extends FpTest {
 
 class exercise_3_6 extends FpTest {
   def init[A](l: List[A]): List[A] = l match {
-    case Nil => Nil
+    case Nil          => Nil
     case Cons(_, Nil) => Nil
-    case Cons(h, t) => Cons(h, init(t))
+    case Cons(h, t)   => Cons(h, init(t))
   }
 
   "init" should "copy the list except last element" in {
@@ -90,4 +89,4 @@ class exercise_3_6 extends FpTest {
     init(Cons(1, Cons(33, Cons(0, Nil)))) shouldBe Cons(1, Cons(33, Nil))
   }
 
-  }
+}
