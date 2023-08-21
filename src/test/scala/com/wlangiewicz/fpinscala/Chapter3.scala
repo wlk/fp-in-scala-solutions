@@ -67,10 +67,10 @@ class exercise_3_5 extends FpTest {
   }
 
   "dropWhile" should "drop elements from a list" in {
-    dropWhile(Nil, _: Nothing => true) shouldBe Nil
-    dropWhile(Nil, _: Nothing => false) shouldBe Nil
-    dropWhile(Cons(1, Nil), _: Int => true) shouldBe Nil
-    dropWhile(Cons(1, Cons(2, Nil)), _: Int => false) shouldBe Nil
+    dropWhile(Nil, (x: Int) => x == 0) shouldBe Nil
+    dropWhile(Nil, (x: Int) => x == 0) shouldBe Nil
+    dropWhile(Cons(1, Nil), (x: Int) => x > 0) shouldBe Nil
+    dropWhile(Cons(1, Cons(2, Nil)), (x: Int) => x > 0) shouldBe Nil
     dropWhile(Cons(1, Cons(33, Cons(0, Nil))), (x: Int) => x <= 1) shouldBe Cons(33, Cons(0, Nil))
   }
 }
@@ -89,4 +89,34 @@ class exercise_3_6 extends FpTest {
     init(Cons(1, Cons(33, Cons(0, Nil)))) shouldBe Cons(1, Cons(33, Nil))
   }
 
+}
+
+class exercise_3_7 extends FpTest {
+  def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B =
+    as match {
+      case Nil         => z
+      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+
+  def product(ns: List[Double]): Double = foldRight(ns, 0.0)(_ * _)
+
+  var foldCalls = 0 // using var to track how many times foldRightShortCircuit has been called
+
+  def foldRightShortCircuit[A, B](as: List[A], z: B)(
+      f: (A, B) => B)(shortCircuitTrigger: A, shortCircuitReturn: B): B = {
+    foldCalls = foldCalls + 1
+    as match {
+      case Nil                                    => z
+      case Cons(x, _) if x == shortCircuitTrigger => shortCircuitReturn
+      case Cons(x, xs) => f(x, foldRightShortCircuit(xs, z)(f)(shortCircuitTrigger, shortCircuitReturn))
+    }
+  }
+
+  def productShortCircuit(ns: List[Double]): Double =
+    foldRightShortCircuit(ns, 1.0)((x, y) => x + y)(0.0, 0.0)
+
+  "foldRightShortCircuit" should "short circuit fold right" in {
+    productShortCircuit(Cons(0.0, Cons(2.0, Cons(3.0, Nil)))) shouldBe 0.0
+    foldCalls shouldBe 1
+  }
 }

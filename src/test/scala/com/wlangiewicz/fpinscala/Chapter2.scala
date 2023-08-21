@@ -55,14 +55,14 @@ class exercise_2_2 extends FpTest {
     else
       true
 
-  isSorted[Int](Array(1, 2, 3, 4, 5, 6), (a, b) => a >= b) shouldBe true
+  isSorted[Int](Array(1, 2, 3, 4, 5, 6), (a, b) => a >= b) shouldBe false
   isSorted[Int](Array(1), (a, b) => a <= b) shouldBe true
   isSorted[Int](Array(1, 2), (a, b) => a <= b) shouldBe true
-  isSorted[Int](Array(1, 5, 3, 7, 2, 4, 9, 2), (a, b) => a >= b) shouldBe true
+  isSorted[Int](Array(1, 5, 3, 7, 2, 4, 9, 2), (a, b) => a >= b) shouldBe false
   isSorted[Int](Array(1, 2, 3, 4, 5, 6), (a, b) => a < b) shouldBe true
   isSorted[Int](Array.empty, (a, b) => a < b) shouldBe true
   isSorted[String](Array("a", "b", "c", "d"), (a, b) => a < b) shouldBe true
-  isSorted[String](Array("a", "b", "c", "d"), (a, b) => a == b) shouldBe true
+  isSorted[String](Array("a", "b", "c", "d"), (a, b) => a == b) shouldBe false
 
 }
 
