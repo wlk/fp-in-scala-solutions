@@ -122,13 +122,96 @@ class exercise_3_8 extends FpTest {
 }
 
 class exercise_3_9 extends FpTest {
-  def length[A](as: List[A]): Int = {
+  def length[A](as: List[A]): Int =
     List.foldRight(as, 0)((_, y) => y + 1)
-  }
 
   "length" should "calculate list length" in {
     length(Nil) shouldBe 0
     length(Cons(2, Nil)) shouldBe 1
     length(Cons(2, Cons(99, Nil))) shouldBe 2
+  }
+}
+
+class exercise_3_10 extends FpTest {
+  "foldLeft" should "reverse the list" in {
+    List.foldLeft(List(1, 2, 3), Nil: List[Int])((x, y) => Cons(y, x)) shouldBe Cons(3, Cons(2, Cons(1, Nil)))
+  }
+}
+
+class exercise_3_11 extends FpTest {
+  "sum" should "sum elements" in {
+    def sum(xs: List[Int]): Int = List.foldLeft(xs, 0)((b, a) => b + a)
+
+    sum(Nil) shouldBe 0
+    sum(Cons(1, Cons(33, Nil))) shouldBe 34
+  }
+
+  "product" should "compute product of the list" in {
+    def product(xs: List[Int]): Int = xs match {
+      case Nil => 0
+      case _   => List.foldLeft(xs, 1)((b, a) => b * a)
+    }
+
+    product(Nil) shouldBe 0
+    product(Cons(2, Cons(33, Nil))) shouldBe 66
+  }
+
+  "length" should "calculate length of the list" in {
+    def length(xs: List[Int]): Int = List.foldLeft(xs, 0)((b, a) => b + 1)
+
+    length(Nil) shouldBe 0
+    length(Cons(2, Cons(33, Nil))) shouldBe 2
+  }
+
+}
+
+class exercise_3_12 extends FpTest {
+  "reverse" should "reverse the list" in {
+    def reverse(xs: List[Int]): List[Int] = List.foldLeft(xs, Nil: List[Int])((x, y) => Cons(y, x))
+
+    reverse(Nil) shouldBe Nil
+    reverse(Cons(1, Cons(2, Cons(3, Nil)))) shouldBe Cons(3, Cons(2, Cons(1, Nil)))
+  }
+}
+
+class exercise_3_13 extends FpTest {
+  "foldLeft via foldRight" should "reverse the list" in {
+    def foldLeftViaFoldRight[A, B](as: List[A], z: B)(f: (B, A) => B): B =
+      List.foldRight(as, (b: B) => b)((a, g) => b => g(f(b, a)))(z)
+    foldLeftViaFoldRight(List(1, 2, 3), Nil: List[Int])((x, y) => Cons(y, x)) shouldBe Cons(3, Cons(2, Cons(1, Nil)))
+  }
+
+  "foldRight via foldLeft" should "not modify the list" in {
+    def foldRightViaFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B =
+      List.foldLeft(as, (b: B) => b)((g, a) => b => g(f(a, b)))(z)
+
+    foldRightViaFoldLeft(List(1, 2, 3), Nil: List[Int])((x, y) => Cons(x, y)) shouldBe Cons(1, Cons(2, Cons(3, Nil)))
+  }
+}
+
+class exercise_3_14 extends FpTest {
+  "append" should "append element to the list" in {
+
+    List.append(Nil)(1) shouldBe Cons(1, Nil)
+    List.append(Cons(1, Cons(2, Nil)))(3) shouldBe Cons(1, Cons(2, Cons(3, Nil)))
+  }
+
+  "appendList" should "append 2 lists together" in {
+
+    List.appendList(Nil)(Nil) shouldBe Nil
+    List.appendList(Cons(1, Cons(2, Nil)))(Cons(3, Cons(4, Nil))) shouldBe Cons(1, Cons(2, Cons(3, Cons(4, Nil))))
+  }
+}
+
+class exercise_3_15 extends FpTest {
+  "concat" should "concatenate the lists" in {
+    def concat(as: List[List[Int]]): List[Int] =
+      List.foldRight(as, Nil: List[Int])(List.appendList(_)(_))
+
+    val l1 = Cons(1, Cons(2, Nil))
+    val l2 = Cons(3, Cons(4, Nil))
+
+    concat(Cons(Nil, Cons(Nil, Nil))) shouldBe Nil
+    concat(Cons(l1, Cons(l2, Nil))) shouldBe Cons(1, Cons(2, Cons(3, Cons(4, Nil))))
   }
 }
