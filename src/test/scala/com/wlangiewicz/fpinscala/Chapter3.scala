@@ -92,13 +92,7 @@ class exercise_3_6 extends FpTest {
 }
 
 class exercise_3_7 extends FpTest {
-  def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B =
-    as match {
-      case Nil         => z
-      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
-    }
-
-  def product(ns: List[Double]): Double = foldRight(ns, 0.0)(_ * _)
+  def product(ns: List[Double]): Double = List.foldRight(ns, 0.0)(_ * _)
 
   var foldCalls = 0 // using var to track how many times foldRightShortCircuit has been called
 
@@ -118,5 +112,23 @@ class exercise_3_7 extends FpTest {
   "foldRightShortCircuit" should "short circuit fold right" in {
     productShortCircuit(Cons(0.0, Cons(2.0, Cons(3.0, Nil)))) shouldBe 0.0
     foldCalls shouldBe 1
+  }
+}
+
+class exercise_3_8 extends FpTest {
+  "foldRight" should "x" in {
+    List.foldRight(List(1, 2, 3), Nil: List[Int])(Cons(_, _)) shouldBe Cons(1, Cons(2, Cons(3, Nil)))
+  }
+}
+
+class exercise_3_9 extends FpTest {
+  def length[A](as: List[A]): Int = {
+    List.foldRight(as, 0)((_, y) => y + 1)
+  }
+
+  "length" should "calculate list length" in {
+    length(Nil) shouldBe 0
+    length(Cons(2, Nil)) shouldBe 1
+    length(Cons(2, Cons(99, Nil))) shouldBe 2
   }
 }

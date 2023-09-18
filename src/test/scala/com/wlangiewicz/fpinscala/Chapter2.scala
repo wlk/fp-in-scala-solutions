@@ -77,3 +77,4 @@ class exercise_2_4 extends FpTest {
 class exercise_2_5 extends FpTest {
   def compose[A, B, C](f: B => C, g: A => B): A => C = a => f(g(a))
 }
+
